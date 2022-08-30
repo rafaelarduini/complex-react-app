@@ -1,11 +1,12 @@
 import React from "react";
-import ReactDom from "react-dom/client";
+import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import About from "./components/About";
-import Footer from "./components/Footer";
+// My Components
 import Header from "./components/Header";
 import HomeGuest from "./components/HomeGuest";
+import Footer from "./components/Footer";
+import About from "./components/About";
 import Terms from "./components/Terms";
 
 function Main() {
@@ -22,7 +23,7 @@ function Main() {
   );
 }
 
-const root = ReactDom.createRoot(document.querySelector("#app"));
+const root = ReactDOM.createRoot(document.querySelector("#app"));
 root.render(<Main />);
 
 if (module.hot) {

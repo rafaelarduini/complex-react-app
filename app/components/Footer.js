@@ -8,11 +8,11 @@ function Footer() {
         <Link to="/" className="mx-1">
           Home
         </Link>{" "}
-        |
+        |{" "}
         <Link className="mx-1" to="/about-us">
           About Us
         </Link>{" "}
-        |
+        |{" "}
         <Link className="mx-1" to="/terms">
           Terms
         </Link>

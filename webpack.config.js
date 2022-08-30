@@ -14,8 +14,8 @@ module.exports = {
     static: {
       directory: path.join(__dirname, "app")
     },
-    hot: true,
     liveReload: false,
+    hot: true,
     historyApiFallback: { index: "index.html" }
   },
   module: {

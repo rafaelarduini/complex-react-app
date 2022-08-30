@@ -3,7 +3,7 @@ import Page from "./Page";
 
 function Terms() {
   return (
-    <Page title="Terms">
+    <Page title="Terms and Conditions">
       <h2>Our Terms &amp; Conditions</h2>
       <p className="lead text-muted">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis
