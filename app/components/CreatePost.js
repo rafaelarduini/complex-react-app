@@ -1,14 +1,14 @@
 import Axios from "axios";
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import ExampleContext from "../ExampleContext";
+import DispatchContext from "../DispatchContext";
 import Page from "./Page";
 
 function CreatePost() {
   const [title, setTitle] = useState();
   const [body, setBody] = useState();
   const navigate = useNavigate();
-  const { addFlashMessage } = useContext(ExampleContext);
+  const appDispatch = useContext(DispatchContext);
 
   async function hadleSubmit(e) {
     e.preventDefault();
@@ -19,7 +19,10 @@ function CreatePost() {
         body,
         token: localStorage.getItem("complexappToken")
       });
-      addFlashMessage("Congrats, you successfully created a post.");
+      appDispatch({
+        type: "flashMessage",
+        value: "Congrats, you successfully created a post."
+      });
       navigate(`/post/${response.data}`);
       console.log("New post was created");
     } catch (e) {
