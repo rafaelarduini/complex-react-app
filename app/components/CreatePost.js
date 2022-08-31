@@ -1,27 +1,30 @@
 import Axios from "axios";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Page from "./Page";
 
 function CreatePost() {
   const [title, setTitle] = useState();
   const [body, setBody] = useState();
+  const navigate = useNavigate();
 
   async function hadleSubmit(e) {
     e.preventDefault();
 
     try {
-      await Axios.post("/create-post", {
+      const response = await Axios.post("/create-post", {
         title,
         body,
         token: localStorage.getItem("complexappToken")
       });
+      navigate(`/post/${response.data}`);
       console.log("New post was created");
     } catch (e) {
       console.log("There was a problem");
     }
   }
   return (
-    <Page>
+    <Page title="Create New Post">
       <form onSubmit={hadleSubmit}>
         <div className="form-group">
           <label htmlFor="post-title" className="text-muted mb-1">
