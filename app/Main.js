@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useImmerReducer } from "use-immer";
@@ -22,13 +22,19 @@ import FlashMessages from "./components/FlashMessages";
 function Main() {
   const initialState = {
     loggedIn: Boolean(localStorage.getItem("complexappToken")),
-    flashMessages: []
+    flashMessages: [],
+    user: {
+      token: localStorage.getItem("complexappToken"),
+      username: localStorage.getItem("complexappUsername"),
+      avatar: localStorage.getItem("complexappAvatar")
+    }
   };
 
   function ourReducer(draft, action) {
     switch (action.type) {
       case "login":
         draft.loggedIn = true;
+        draft.user = action.data;
         return;
 
       case "logout":
@@ -42,6 +48,18 @@ function Main() {
   }
 
   const [state, dispatch] = useImmerReducer(ourReducer, initialState);
+
+  useEffect(() => {
+    if (state.loggedIn) {
+      localStorage.setItem("complexapptoken", state.user.token);
+      localStorage.setItem("complexappusername", state.user.username);
+      localStorage.setItem("complexappavatar", state.user.avatar);
+    } else {
+      localStorage.removeItem("complexapptoken");
+      localStorage.removeItem("complexappusername");
+      localStorage.removeItem("complexappavatar");
+    }
+  }, [state.loggedIn]);
 
   return (
     <StateContext.Provider value={state}>

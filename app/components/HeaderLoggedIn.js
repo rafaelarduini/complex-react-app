@@ -1,15 +1,14 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import DispatchContext from "../DispatchContext";
+import StateContext from "../StateContext";
 
 function HeaderLoggedIn() {
   const appDispatch = useContext(DispatchContext);
+  const appState = useContext(StateContext);
 
   function handleLoggedOut() {
     appDispatch({ type: "logout" });
-    localStorage.removeItem("complexappToken");
-    localStorage.removeItem("complexappUsername");
-    localStorage.removeItem("complexappAvatar");
   }
   return (
     <div className="flex-row my-3 my-md-0">

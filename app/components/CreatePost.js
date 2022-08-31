@@ -2,6 +2,7 @@ import Axios from "axios";
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import DispatchContext from "../DispatchContext";
+import StateContext from "../StateContext";
 import Page from "./Page";
 
 function CreatePost() {
@@ -9,6 +10,7 @@ function CreatePost() {
   const [body, setBody] = useState();
   const navigate = useNavigate();
   const appDispatch = useContext(DispatchContext);
+  const appState = useContext(StateContext);
 
   async function hadleSubmit(e) {
     e.preventDefault();
@@ -17,7 +19,7 @@ function CreatePost() {
       const response = await Axios.post("/create-post", {
         title,
         body,
-        token: localStorage.getItem("complexappToken")
+        token: appState.user.token
       });
       appDispatch({
         type: "flashMessage",
