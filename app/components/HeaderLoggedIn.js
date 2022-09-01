@@ -19,14 +19,9 @@ function HeaderLoggedIn() {
         <i className="fas fa-comment"></i>
         <span className="chat-count-badge text-white"> </span>
       </span>
-      <a href="#" className="mr-2">
-        <img
-          className="small-header-avatar"
-          src={
-            "https://media-exp1.licdn.com/dms/image/C4D03AQGJp9bKkdWGGQ/profile-displayphoto-shrink_200_200/0/1655952752246?e=1667433600&v=beta&t=ybL9MKfyqFmQnZNR3D6AQROocsfqiS6qt6Cp1-FNYEg"
-          }
-        />
-      </a>
+      <Link to={`/profile/${appState.user.username}`} className="mr-2">
+        <img className="small-header-avatar" src={appState.user.avatar} />
+      </Link>
       <Link className="btn btn-sm btn-success mr-2" to="/create-post">
         Create Post
       </Link>
