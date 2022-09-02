@@ -3,21 +3,18 @@ import Axios from "axios";
 import DispatchContext from "../DispatchContext";
 
 function HeaderLoggedOut() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState();
+  const [password, setPassword] = useState();
   const appDispatch = useContext(DispatchContext);
 
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      const response = await Axios.post("/login", {
-        username,
-        password
-      });
+      const response = await Axios.post("/login", { username, password });
       if (response.data) {
         appDispatch({ type: "login", data: response.data });
       } else {
-        console.log("Incorrect username / password");
+        console.log("Incorrect username / password.");
       }
     } catch (e) {
       console.log("There was a problem.");

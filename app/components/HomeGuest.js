@@ -3,18 +3,14 @@ import Page from "./Page";
 import Axios from "axios";
 
 function HomeGuest() {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
 
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      await Axios.post("/register", {
-        username,
-        email,
-        password
-      });
+      await Axios.post("/register", { username, email, password });
       console.log("User was successfully created.");
     } catch (e) {
       console.log("There was an error.");

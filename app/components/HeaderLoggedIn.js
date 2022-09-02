@@ -7,9 +7,10 @@ function HeaderLoggedIn() {
   const appDispatch = useContext(DispatchContext);
   const appState = useContext(StateContext);
 
-  function handleLoggedOut() {
+  function handleLogout() {
     appDispatch({ type: "logout" });
   }
+
   return (
     <div className="flex-row my-3 my-md-0">
       <a href="#" className="text-white mr-2 header-search-icon">
@@ -25,7 +26,7 @@ function HeaderLoggedIn() {
       <Link className="btn btn-sm btn-success mr-2" to="/create-post">
         Create Post
       </Link>
-      <button onClick={handleLoggedOut} className="btn btn-sm btn-secondary">
+      <button onClick={handleLogout} className="btn btn-sm btn-secondary">
         Sign Out
       </button>
     </div>

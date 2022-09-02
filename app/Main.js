@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useImmerReducer } from "use-immer";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Axios from "axios";
 Axios.defaults.baseURL = "http://localhost:8080";
 
@@ -11,10 +11,10 @@ import DispatchContext from "./DispatchContext";
 // My Components
 import Header from "./components/Header";
 import HomeGuest from "./components/HomeGuest";
+import Home from "./components/Home";
 import Footer from "./components/Footer";
 import About from "./components/About";
 import Terms from "./components/Terms";
-import Home from "./components/Home";
 import CreatePost from "./components/CreatePost";
 import ViewSinglePost from "./components/ViewSinglePost";
 import FlashMessages from "./components/FlashMessages";
@@ -37,11 +37,9 @@ function Main() {
         draft.loggedIn = true;
         draft.user = action.data;
         return;
-
       case "logout":
         draft.loggedIn = false;
         return;
-
       case "flashMessage":
         draft.flashMessages.push(action.value);
         return;
@@ -52,13 +50,13 @@ function Main() {
 
   useEffect(() => {
     if (state.loggedIn) {
-      localStorage.setItem("complexapptoken", state.user.token);
-      localStorage.setItem("complexappusername", state.user.username);
-      localStorage.setItem("complexappavatar", state.user.avatar);
+      localStorage.setItem("complexappToken", state.user.token);
+      localStorage.setItem("complexappUsername", state.user.username);
+      localStorage.setItem("complexappAvatar", state.user.avatar);
     } else {
-      localStorage.removeItem("complexapptoken");
-      localStorage.removeItem("complexappusername");
-      localStorage.removeItem("complexappavatar");
+      localStorage.removeItem("complexappToken");
+      localStorage.removeItem("complexappUsername");
+      localStorage.removeItem("complexappAvatar");
     }
   }, [state.loggedIn]);
 
@@ -66,8 +64,8 @@ function Main() {
     <StateContext.Provider value={state}>
       <DispatchContext.Provider value={dispatch}>
         <BrowserRouter>
-          <Header />
           <FlashMessages messages={state.flashMessages} />
+          <Header />
           <Routes>
             <Route path="/profile/:username/*" element={<Profile />} />
             <Route
