@@ -36,15 +36,19 @@ function EditPost() {
         return;
 
       case "titleChange":
+        draft.title.hasErros = false;
         draft.title.value = action.value;
         return;
 
       case "bodyChange":
+        draft.body.hasErros = false;
         draft.body.value = action.value;
         return;
 
       case "submitRequest":
-        draft.sendCount++;
+        if (!draft.title.hasErros && !draft.body.hasErros) {
+          draft.sendCount++;
+        }
         return;
 
       case "saveRequestStarted":
@@ -54,12 +58,28 @@ function EditPost() {
       case "saveRequestFinished":
         draft.isSaving = false;
         return;
+
+      case "titleRules":
+        if (!action.value.trim()) {
+          draft.title.hasErros = true;
+          draft.title.message = "You must provide a title.";
+        }
+        return;
+
+      case "bodyRules":
+        if (!action.value.trim()) {
+          draft.body.hasErros = true;
+          draft.body.message = "You must provide body content.";
+        }
+        return;
     }
   }
   const [state, dispatch] = useImmerReducer(ourReducer, originalState);
 
   function submitHandler(e) {
     e.preventDefault();
+    dispatch({ type: "titleRules", value: state.title.value });
+    dispatch({ type: "bodyRules", value: state.body.value });
     dispatch({ type: "submitRequest" });
   }
 
@@ -131,6 +151,9 @@ function EditPost() {
             onChange={e =>
               dispatch({ type: "titleChange", value: e.target.value })
             }
+            onBlur={e =>
+              dispatch({ type: "titleRules", value: e.target.value })
+            }
             value={state.title.value}
             autoFocus
             name="title"
@@ -140,6 +163,11 @@ function EditPost() {
             placeholder=""
             autoComplete="off"
           />
+          {state.title.hasErros && (
+            <div className="alert alert-danger small liveValidateMessage">
+              {state.title.message}
+            </div>
+          )}
         </div>
 
         <div className="form-group">
@@ -150,12 +178,18 @@ function EditPost() {
             onChange={e =>
               dispatch({ type: "bodyChange", value: e.target.value })
             }
+            onBlur={e => dispatch({ type: "bodyRules", value: e.target.value })}
             value={state.body.value}
             name="body"
             id="post-body"
             className="body-content tall-textarea form-control"
             type="text"
           />
+          {state.body.hasErros && (
+            <div className="alert alert-danger small liveValidateMessage">
+              {state.body.message}
+            </div>
+          )}
         </div>
         <button disabled={state.isSaving} className="btn btn-primary">
           Save Updates
