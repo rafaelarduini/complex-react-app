@@ -1,8 +1,8 @@
-import Axios from "axios";
-import React, { useContext, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { useImmer } from "use-immer";
+import React, { useEffect, useContext } from "react";
 import DispatchContext from "../DispatchContext";
+import { useImmer } from "use-immer";
+import Axios from "axios";
+import { Link } from "react-router-dom";
 
 function Search() {
   const appDispatch = useContext(DispatchContext);
@@ -110,7 +110,7 @@ function Search() {
           <div
             className={
               "live-search-results " +
-              (state.show == "results" ? "circle-loader--visible" : "")
+              (state.show == "results" ? "live-search-results--visible" : "")
             }
           >
             {Boolean(state.results.length) && (
@@ -144,7 +144,7 @@ function Search() {
             )}
             {!Boolean(state.results.length) && (
               <p className="alert alert-danger text-center shadow-sm">
-                Sorry, we coulkd not find any results for that search.
+                Sorry, we could not find any results for that search.
               </p>
             )}
           </div>
