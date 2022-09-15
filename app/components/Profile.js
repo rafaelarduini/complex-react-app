@@ -128,7 +128,7 @@ function Profile() {
           state.profileData.profileUsername != "..." && (
             <button
               onClick={startFollowing}
-              disable={state.followActionLoading}
+              disabled={state.followActionLoading}
               className="btn btn-primary btn-sm ml-2"
             >
               Follow <i className="fas fa-user-plus"></i>
@@ -140,7 +140,7 @@ function Profile() {
           state.profileData.profileUsername != "..." && (
             <button
               onClick={stopFollowing}
-              disable={state.followActionLoading}
+              disabled={state.followActionLoading}
               className="btn btn-danger btn-sm ml-2"
             >
               Stop Following <i className="fas fa-user-times"></i>
