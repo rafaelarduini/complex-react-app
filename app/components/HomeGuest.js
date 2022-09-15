@@ -53,7 +53,7 @@ function HomeGuest() {
           draft.username.hasErrors = true;
           draft.username.message = "Username must be at last 3 characters.";
         }
-        if (!draft.hasErrors) {
+        if (!draft.username.hasErrors) {
           draft.username.checkCount++;
         }
         return;
