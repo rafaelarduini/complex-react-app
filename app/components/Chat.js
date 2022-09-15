@@ -1,10 +1,9 @@
-import React from "react";
-import { useEffect } from "react";
-import { useRef } from "react";
-import { useContext } from "react";
-import DispatchContext from "../DispatchContext";
+import React, { useEffect, useContext, useRef } from "react";
 import StateContext from "../StateContext";
+import DispatchContext from "../DispatchContext";
 import { useImmer } from "use-immer";
+import io from "socket.io-client";
+const socket = io("http://localhost:8080");
 
 function Chat() {
   const chatField = useRef(null);
@@ -21,19 +20,31 @@ function Chat() {
     }
   }, [appState.isChatOpen]);
 
-  function hadleFieldChange(e) {
+  useEffect(() => {
+    socket.on("chatFromServer", message => {
+      setState(draft => {
+        draft.chatMessages.push(message);
+      });
+    });
+  }, []);
+
+  function handleFieldChange(e) {
     const value = e.target.value;
     setState(draft => {
       draft.fieldValue = value;
     });
   }
 
-  function hadleSubmit(e) {
+  function handleSubmit(e) {
     e.preventDefault();
-    //Send message to chat server
+    // Send message to chat server
+    socket.emit("chatFromBrowser", {
+      message: state.fieldValue,
+      token: appState.user.token
+    });
 
     setState(draft => {
-      //Add message to state collection of messages
+      // Add message to state collection of messages
       draft.chatMessages.push({
         message: draft.fieldValue,
         username: appState.user.username,
@@ -46,9 +57,10 @@ function Chat() {
   return (
     <div
       id="chat-wrapper"
-      className={`chat-wrapper ${
-        appState.isChatOpen ? "chat-wrapper--is-visible" : ""
-      } shadow border-top border-left border-right`}
+      className={
+        "chat-wrapper shadow border-top border-left border-right " +
+        (appState.isChatOpen ? "chat-wrapper--is-visible" : "")
+      }
     >
       <div className="chat-title-bar bg-primary">
         Chat
@@ -63,47 +75,40 @@ function Chat() {
         {state.chatMessages.map((message, index) => {
           if (message.username == appState.user.username) {
             return (
-              <>
-                <div className="chat-self">
-                  <div className="chat-message">
-                    <div className="chat-message-inner">{message.message}</div>
-                  </div>
-                  <img
-                    className="chat-avatar avatar-tiny"
-                    src={message.avatar}
-                  />
+              <div className="chat-self">
+                <div className="chat-message">
+                  <div className="chat-message-inner">{message.message}</div>
                 </div>
-              </>
-            );
-          } else {
-            return (
-              <>
-                <div className="chat-other">
-                  <a href="#">
-                    <img className="avatar-tiny" src={message.avatar} />
-                  </a>
-                  <div className="chat-message">
-                    <div className="chat-message-inner">
-                      <a href="#">
-                        <strong>{message.username}: </strong>
-                      </a>
-                      {message.message}
-                    </div>
-                  </div>
-                </div>
-              </>
+                <img className="chat-avatar avatar-tiny" src={message.avatar} />
+              </div>
             );
           }
+
+          return (
+            <div className="chat-other">
+              <a href="#">
+                <img className="avatar-tiny" src={message.avatar} />
+              </a>
+              <div className="chat-message">
+                <div className="chat-message-inner">
+                  <a href="#">
+                    <strong>{message.username}:</strong>
+                  </a>
+                  {message.message}
+                </div>
+              </div>
+            </div>
+          );
         })}
       </div>
       <form
-        onSubmit={hadleSubmit}
+        onSubmit={handleSubmit}
         id="chatForm"
         className="chat-form border-top"
       >
         <input
           value={state.fieldValue}
-          onChange={hadleFieldChange}
+          onChange={handleFieldChange}
           ref={chatField}
           type="text"
           className="chat-field"
